@@ -192,7 +192,7 @@ class Event(models.Model):
         (DISABLE, 'Disable'),
     ]
     event_id = models.CharField(max_length=10, primary_key=True)
-    event_name = models.CharField(primary_key=True)
+    event_name = models.CharField(max_length=255)
     day_start = models.DateField()
     day_end = models.DateField()
     status = models.IntegerField(choices=STATUS_CHOICE, default=ENABLE)
@@ -210,7 +210,7 @@ class Activation(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     date_time_start = models.DateField()
     date_time_end = models.DateField()
-    staged_area = models.CharField()
+    staged_area = models.CharField(max_length=255)
     status = models.IntegerField(choices=STATUS_CHOICE, default=ENABLE)
     check_code = models.CharField(max_length=100, blank=True)
 
