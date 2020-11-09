@@ -20,3 +20,4 @@ Unipath
 whitenoise
 django-include-by-ajax
 django-preventconcurrentlogins
+pillow

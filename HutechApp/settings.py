@@ -40,6 +40,8 @@ SESSION_TIMEOUT_REDIRECT = 'logout/'
 INSTALLED_APPS = [
     'api',
     'backend',
+    'include_by_ajax',
+    'preventconcurrentlogins',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
