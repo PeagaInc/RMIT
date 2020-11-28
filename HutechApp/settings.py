@@ -28,7 +28,8 @@ SECRET_KEY = '*(#_=u_)*z3ha9@q0t4p+6&1#=#@g=d1kiw^rjr!a18@+ows0b'
 DEBUG = True
 
 # load production server
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','192.168.0.103', config('SERVER', default='127.0.0.1'), 'ec2-54-169-173-130.ap-southeast-1.compute.amazonaws.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.0.103', config(
+    'SERVER', default='127.0.0.1'), 'ec2-54-169-173-130.ap-southeast-1.compute.amazonaws.com']
 # Session Expired: expire the session after the last activity
 SESSION_EXPIRE_SECONDS = 3600
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
@@ -40,6 +41,7 @@ SESSION_TIMEOUT_REDIRECT = 'logout/'
 INSTALLED_APPS = [
     'api',
     'backend',
+    'rest_framework',
     'include_by_ajax',
     'preventconcurrentlogins',
     'django.contrib.admin',
