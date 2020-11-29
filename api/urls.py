@@ -21,7 +21,7 @@ from api.viewsets import ErrorLogViewSet
 
 # Routers for API test - Using Django Rest ViewSet
 router = routers.DefaultRouter()
-router.register('campusses', CampusViewSet)
+router.register('campuses', CampusViewSet)
 router.register('departments', DepartmentViewSet)
 router.register('classrooms', ClassroomViewSet)
 router.register('classes', ClassViewSet)

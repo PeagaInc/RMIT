@@ -29,13 +29,13 @@ DEBUG = True
 
 # load production server
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.0.103', config(
-    'SERVER', default='127.0.0.1'), 'ec2-54-169-173-130.ap-southeast-1.compute.amazonaws.com']
+    'SERVER', default='127.0.0.1'), '54.169.201.11','api.peaga.xyz']
 # Session Expired: expire the session after the last activity
 SESSION_EXPIRE_SECONDS = 3600
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
-SESSION_TIMEOUT_REDIRECT = 'logout/'
-
-
+SESSION_TIMEOUT_REDIRECT = ''
+# SSL
+# SECURE_SSL_REDIRECT = True
 # Application definition
 
 INSTALLED_APPS = [

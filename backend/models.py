@@ -243,6 +243,7 @@ class EmployeeTimeSheet(models.Model):
         (IS_CHECKOUT, 'Is Check-out'),
     ]
     attendance_id = models.AutoField(primary_key=True)
+    employee = models.ForeignKey(Employee, on_delete = models.PROTECT) 
     checkin_time = models.DateTimeField(blank=True)
     checkout_time = models.DateTimeField(blank=True)
     checkin_image = models.ImageField(
