@@ -1,5 +1,6 @@
+from os import error
 from rest_framework import viewsets, permissions
-
+from rest_framework.response import Response
 
 from api.serializers import CampusSerializers
 from api.serializers import DepartmentSerializers
@@ -19,6 +20,7 @@ from api.serializers import EmployeeTimeSheetSerializers
 from api.serializers import ModelLinkSerializers
 from api.serializers import ErrorLogSerializers
 
+from django.contrib.auth.models import User
 from backend.models import Campus
 from backend.models import Department
 from backend.models import Classroom
@@ -36,6 +38,8 @@ from backend.models import EventAttendance
 from backend.models import EmployeeTimeSheet
 from backend.models import ModelLink
 from backend.models import ErrorLog
+
+from api.lib.face_encode import FaceFeature
 
 
 class CampusViewSet(viewsets.ModelViewSet):
@@ -84,6 +88,14 @@ class EmployeeViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = EmployeeSerializers
+
+    def create(self, request):
+        serializer = EmployeeSerializers(data=request.data)
+        str_face_encode = FaceFeature.encodeFace(request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(encode=str_face_encode)
+            return Response("Success")
+        return Response(error)
 
 
 class StudentViewSet(viewsets.ModelViewSet):

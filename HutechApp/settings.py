@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 from decouple import config
 from unipath import Path
-
+from corsheaders.defaults import default_headers
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -29,7 +29,7 @@ DEBUG = True
 
 # load production server
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.0.103', config(
-    'SERVER', default='127.0.0.1'), '54.169.201.11','api.peaga.xyz']
+    'SERVER', default='127.0.0.1'), '54.169.201.11', 'api.peaga.xyz']
 # Session Expired: expire the session after the last activity
 SESSION_EXPIRE_SECONDS = 3600
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
@@ -41,8 +41,11 @@ SESSION_TIMEOUT_REDIRECT = ''
 INSTALLED_APPS = [
     'api',
     'backend',
+    'corsheaders',
+    'dj_rest_auth',
     'rest_framework',
     'include_by_ajax',
+    'rest_framework.authtoken',
     'preventconcurrentlogins',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -63,9 +66,29 @@ MIDDLEWARE = [
     'preventconcurrentlogins.middleware.PreventConcurrentLoginsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django_session_timeout.middleware.SessionTimeoutMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'HutechApp.urls'
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8080',
+]
+
+CORS_ALLOW_HEADERS = default_headers + (
+    'contenttype',
+)
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 TEMPLATES = [
     {

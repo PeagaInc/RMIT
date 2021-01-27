@@ -1,6 +1,7 @@
 from rest_framework import routers
 from django.urls import path, include
 # Viewset
+
 from api.viewsets import CampusViewSet
 from api.viewsets import DepartmentViewSet
 from api.viewsets import ClassroomViewSet
@@ -18,7 +19,8 @@ from api.viewsets import EventAttendanceViewSet
 from api.viewsets import EmployeeTimeSheetViewSet
 from api.viewsets import ModelLinkViewSet
 from api.viewsets import ErrorLogViewSet
-
+# Face API
+from api import face_api
 # Routers for API test - Using Django Rest ViewSet
 router = routers.DefaultRouter()
 router.register('campuses', CampusViewSet)
@@ -42,4 +44,5 @@ router.register('errorlogs', ErrorLogViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('face_comparison', face_api.check_face),
 ]

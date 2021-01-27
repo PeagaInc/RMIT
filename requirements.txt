@@ -1,6 +1,7 @@
 asgiref
 autopep8
 dj-database-url
+dj-rest-auth
 docker-compose
 django
 django-cors-headers
@@ -21,3 +22,4 @@ whitenoise
 django-include-by-ajax
 django-preventconcurrentlogins
 pillow
+python-decouple

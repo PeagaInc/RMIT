@@ -1,6 +1,7 @@
 from rest_framework import serializers
-
+from drf_extra_fields.fields import Base64ImageField
 # models
+from django.contrib.auth.models import User
 from backend.models import Campus
 from backend.models import Department
 from backend.models import Classroom
@@ -21,6 +22,7 @@ from backend.models import ErrorLog
 
 
 # Serializers
+
 class CampusSerializers(serializers.ModelSerializer):
     class Meta:
         model = Campus
@@ -52,12 +54,21 @@ class SubjectSerializers(serializers.ModelSerializer):
 
 
 class EmployeeSerializers(serializers.ModelSerializer):
+
+    profile_image = Base64ImageField(required=False)
+    department_name = serializers.CharField(
+        source="department.department_name", read_only=True)
+
     class Meta:
         model = Employee
         fields = '__all__'
 
 
 class StudentSerializers(serializers.ModelSerializer):
+    profile_image = Base64ImageField(required=False)
+    department_name = serializers.CharField(
+        source="school_class.department", read_only=True)
+
     class Meta:
         model = Student
         fields = '__all__'
@@ -106,6 +117,15 @@ class EventAttendanceSerializers(serializers.ModelSerializer):
 
 
 class EmployeeTimeSheetSerializers(serializers.ModelSerializer):
+    checkin_image = Base64ImageField(required=False)
+    checkout_image = Base64ImageField(required=False)
+    employee_first_name = serializers.CharField(
+        source='employee.first_name', read_only=True)
+    employee_last_name = serializers.CharField(
+        source='employee.last_name', read_only=True)
+    campus_name = serializers.CharField(
+        source='campus.campus_name', read_only=True)
+
     class Meta:
         model = EmployeeTimeSheet
         fields = '__all__'

@@ -23,7 +23,7 @@ def upload_to_employee_profile(instance, filename):
 
 def upload_to_employee_attendance(instance, filename):
     extension = filename.split(".")[-1]
-    return "images/employees/attendances/%s/%s-%s.%s" % (instance.Employee.employee_id, date.today().strftime("%Y%m%d%H%M%S"), uuid.uuid4(), extension)
+    return "images/employees/attendances/%s/%s-%s.%s" % (instance.employee_id, date.today().strftime("%Y%m%d%H%M%S"), uuid.uuid4(), extension)
 
 # ---------------------------------------------------------------------------------------
 
@@ -65,7 +65,10 @@ class Campus(models.Model):
 class Department(models.Model):
     department_id = models.CharField(max_length=10, primary_key=True)
     department_name = models.CharField(max_length=100)
-    phone_numer = models.CharField(max_length=10, null=False, blank=True)
+    phone_number = models.CharField(max_length=10, null=False, blank=True)
+
+    def __str__(self):
+        return self.department_name
 
 
 class Classroom(models.Model):
@@ -108,7 +111,8 @@ class Employee(models.Model):
     email = models.EmailField(blank=True)
     phone_number = models.CharField(max_length=10, blank=True)
     profile_image = models.ImageField(upload_to=upload_to_employee_profile)
-    department = models.ForeignKey(Department, on_delete=models.PROTECT)
+    department = models.ForeignKey(
+        Department, related_name='Department', on_delete=models.PROTECT)
     self_code = models.CharField(max_length=255, blank=True)
     encode = models.TextField(blank=True)
     model_url = models.URLField(blank=True)
@@ -175,6 +179,12 @@ class CourseStudentDetail(models.Model):
 
 
 class Lession(models.Model):
+    ENABLE = 1
+    DISABLE = 0
+    STATUS_CHOICE = [
+        (ENABLE, 'Enable'),
+        (DISABLE, 'Disable'),
+    ]
     lession_id = models.CharField(max_length=10, primary_key=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     date = models.DateField()
@@ -182,6 +192,7 @@ class Lession(models.Model):
     time_end = models.TimeField()
     room = models.ForeignKey(Classroom, on_delete=models.PROTECT)
     check_code = models.CharField(max_length=100, blank=True)
+    status = models.IntegerField(choices=STATUS_CHOICE, default=ENABLE)
 
 
 class Event(models.Model):
@@ -235,6 +246,12 @@ class EventAttendance(models.Model):
     actual_location = models.CharField(max_length=100)
 
 
+class EventRegister(models.Model):
+    register_id = models.AutoField(primary_key=True)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    activation = models.ForeignKey(Activation, on_delete=models.CASCADE)
+
+
 class EmployeeTimeSheet(models.Model):
     IS_CHECKIN = 1
     IS_CHECKOUT = 2
@@ -243,13 +260,14 @@ class EmployeeTimeSheet(models.Model):
         (IS_CHECKOUT, 'Is Check-out'),
     ]
     attendance_id = models.AutoField(primary_key=True)
-    employee = models.ForeignKey(Employee, on_delete = models.PROTECT) 
-    checkin_time = models.DateTimeField(blank=True)
-    checkout_time = models.DateTimeField(blank=True)
+    employee = models.ForeignKey(Employee, on_delete=models.PROTECT)
+    checkin_time = models.DateTimeField(blank=True, null=True)
+    checkout_time = models.DateTimeField(blank=True, null=True)
     checkin_image = models.ImageField(
-        upload_to=upload_to_employee_attendance, blank=True)
+        upload_to=upload_to_employee_attendance, blank=True, null=True)
     checkout_image = models.ImageField(
-        upload_to=upload_to_employee_attendance, blank=True)
+        upload_to=upload_to_employee_attendance, blank=True, null=True)
+    campus = models.ForeignKey(Campus, on_delete=models.CASCADE)
     status = models.IntegerField(choices=STATUS_CHOICE, default=IS_CHECKIN)
 
 
